@@ -1,9 +1,11 @@
 [
-  {"station":"Warszawa Wschodnia","arrival":"09:00","departure":"09:05"},
-  {"station":"Warszawa Centralna","arrival":"09:12","departure":"09:14"},
-  {"station":"Łuków","arrival":"10:05","departure":"10:07"},
-  {"station":"Lublin","arrival":"11:30","departure":"11:35"},
-  {"station":"Chełm","arrival":"13:00","departure":"13:05"},
-  {"station":"Przemyśl Gł.","arrival":"16:30","departure":"16:35"},
-  {"station":"Praha Zahradni Mesto","arrival":"22:00","departure":"22:00"}
+  {"station":"Warszawa Wschodnia","arrival":"09:05","departure":"09:05"},
+  {"station":"Warszawa Centralna","arrival":"09:11","departure":"09:16"},
+  {"station":"Warszawa Zachodnia","arrival":"09:19","departure":"09:21"},
+  {"station":"Zawiercie","arrival":"11:08","departure":"11:09"},
+  {"station":"Pyrzowice Lotnisko","arrival":"11:24","departure":"11:26"},
+  {"station":"Tarnowskie Góry","arrival":"11:39","departure":"11:47"},
+  {"station":"Gliwice","arrival":"12:11","departure":"12:19"},
+  {"station":"Racibórz","arrival":"13:12","departure":"13:13"},
+  {"station":"Chałupki","arrival":"13:27","departure":"13:27"}
 ]
