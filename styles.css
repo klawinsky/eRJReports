@@ -1,0 +1,29 @@
+:root{
+  --brand:#0d6efd;
+}
+body{
+  background: #f8f9fa;
+  color:#212529;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+.navbar-brand{font-weight:600}
+.card-header{font-weight:600}
+.table td, .table th{vertical-align:middle}
+.deviation-positive{color:#198754;font-weight:600} /* przyspieszenie - zielony */
+.deviation-zero{color:#000000} /* brak odchyleń - czarny */
+.deviation-negative{color:#dc3545;font-weight:600} /* opóźnienie - czerwony */
+@media print{
+  nav, .btn{display:none}
+}
+.report-a4{
+  width:210mm;
+  min-height:297mm;
+  padding:20mm;
+  background:white;
+  box-shadow:0 0 0.5cm rgba(0,0,0,0.1);
+}
+.report-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.report-title{font-size:18px;font-weight:700}
+.report-section{margin-top:8px;margin-bottom:8px}
+.report-table{width:100%;border-collapse:collapse}
+.report-table th, .report-table td{border:1px solid #ddd;padding:6px;font-size:12px}
