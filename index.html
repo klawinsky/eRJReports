@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>eRJ - Reports</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- html2pdf (do generowania PDF) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-dark bg-primary mb-4">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1">eRJ - Reports</span>
+      <button id="btnGeneratePDF" class="btn btn-light">Wygeneruj PDF</button>
+    </div>
+  </nav>
+
+  <main class="container mb-5">
+    <div class="row g-4">
+      <!-- Sekcja A -->
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">Sekcja A - Dane pociągu</div>
+          <div class="card-body">
+            <div class="row g-3 align-items-end">
+              <div class="col-md-6">
+                <label class="form-label">Numer pociągu</label>
+                <select id="trainSelect" class="form-select">
+                  <option value="">-- wybierz pociąg --</option>
+                  <option value="14022-3">14022/3 Warszawa Wschodnia - Praha Zahradni Mesto</option>
+                  <option value="41022-3">41022/3 Praha Zahradni Mesto - Warszawa Wschodnia</option>
+                  <option value="43000-1">43000/1 Praha hl. n. - Przemyśl Gł.</option>
+                  <option value="34001-0">34001/0 Przemyśl Gł. - Praha hl. n.</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Data kursowania</label>
+                <input id="trainDate" type="date" class="form-control">
+              </div>
+              <div class="col-md-3 text-end">
+                <button id="btnLoadSchedule" class="btn btn-outline-primary">Załaduj rozkład</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sekcja B -->
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Sekcja B - Pracownicy</span>
+            <button id="btnAddEmployee" class="btn btn-sm btn-primary">Dodaj pracownika</button>
+          </div>
+          <div class="card-body">
+            <ul id="employeesList" class="list-group"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sekcja C -->
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Sekcja C - Skład pociągu</span>
+            <button id="btnAddVehicle" class="btn btn-sm btn-primary">Dodaj pojazd</button>
+          </div>
+          <div class="card-body">
+            <ul id="vehiclesList" class="list-group"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sekcja D -->
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Sekcja D - Realizacja rozkładu</span>
+            <button id="btnAddStop" class="btn btn-sm btn-primary">Dodaj wpis</button>
+          </div>
+          <div class="card-body">
+            <table id="stopsTable" class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Stacja</th>
+                  <th>Rozkł. przyjazd</th>
+                  <th>Rozkł. odjazd</th>
+                  <th>Rzecz. przyjazd</th>
+                  <th>Rzecz. odjazd</th>
+                  <th>Opóź. przyj.</th>
+                  <th>Opóź. odj.</th>
+                  <th>Uwagi</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sekcja E -->
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Sekcja E - Uwagi</span>
+            <button id="btnAddNote" class="btn btn-sm btn-primary">Dodaj wpis</button>
+          </div>
+          <div class="card-body">
+            <ul id="notesList" class="list-group"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Akcje -->
+      <div class="col-12 text-end">
+        <button id="btnNewReport" class="btn btn-danger">Rozpocznij nowy wpis</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modale -->
+
+  <!-- Employee Modal -->
+  <div class="modal fade" id="employeeModal" tabindex="-1">
+    <div class="modal-dialog">
+      <form id="employeeForm" class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Dodaj / Edytuj pracownika</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="employeeIndex">
+          <div class="mb-3">
+            <label class="form-label">Imię</label>
+            <input id="empFirstName" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Nazwisko</label>
+            <input id="empLastName" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Stanowisko</label>
+            <input id="empRole" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Uwagi</label>
+            <textarea id="empNotes" class="form-control" rows="2"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Zapisz</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Vehicle Modal -->
+  <div class="modal fade" id="vehicleModal" tabindex="-1">
+    <div class="modal-dialog">
+      <form id="vehicleForm" class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Dodaj / Edytuj pojazd</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="vehicleIndex">
+          <div class="mb-3">
+            <label class="form-label">Oznaczenie (max 8 znaków)</label>
+            <input id="vehId" class="form-control" maxlength="8" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Typ</label>
+            <select id="vehType" class="form-select">
+              <option value="wagon">Wagon</option>
+              <option value="lokomotywa">Lokomotywa</option>
+            </select>
+          </div>
+          <div class="mb-3" id="commercialNumberWrap">
+            <label class="form-label">Numer handlowy</label>
+            <input id="vehCommercial" class="form-control">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Zapisz</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Stop Modal -->
+  <div class="modal fade" id="stopModal" tabindex="-1">
+    <div class="modal-dialog">
+      <form id="stopForm" class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Dodaj / Edytuj wpis rozkładowy</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="stopIndex">
+          <div class="mb-3">
+            <label class="form-label">Stacja</label>
+            <input id="stopStation" class="form-control" list="stationsList" required>
+            <datalist id="stationsList"></datalist>
+          </div>
+          <div class="row g-2">
+            <div class="col-6">
+              <label class="form-label">Rozkł. przyjazd</label>
+              <input id="plannedArrival" class="form-control" type="time">
+            </div>
+            <div class="col-6">
+              <label class="form-label">Rozkł. odjazd</label>
+              <input id="plannedDeparture" class="form-control" type="time">
+            </div>
+            <div class="col-6">
+              <label class="form-label">Rzecz. przyjazd</label>
+              <input id="actualArrival" class="form-control" type="time">
+            </div>
+            <div class="col-6">
+              <label class="form-label">Rzecz. odjazd</label>
+              <input id="actualDeparture" class="form-control" type="time">
+            </div>
+          </div>
+          <div class="mb-3 mt-2">
+            <label class="form-label">Powód opóźnienia przyjazdu</label>
+            <input id="delayArrivalReason" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Powód opóźnienia odjazdu</label>
+            <input id="delayDepartureReason" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Uwagi</label>
+            <textarea id="stopNotes" class="form-control" rows="2"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Zapisz</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Note Modal -->
+  <div class="modal fade" id="noteModal" tabindex="-1">
+    <div class="modal-dialog">
+      <form id="noteForm" class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Dodaj / Edytuj uwagę</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="noteIndex">
+          <div class="mb-3">
+            <label class="form-label">Treść uwagi</label>
+            <textarea id="noteText" class="form-control" rows="4" required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Zapisz</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- App JS -->
+  <script src="app.js"></script>
+</body>
+</html>
