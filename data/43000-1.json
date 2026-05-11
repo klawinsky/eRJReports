@@ -1,1 +1,6 @@
-
+[
+  {"station":"Petrovice u Karvine","arrival":"02:00","departure":"02:00"},
+  {"station":"Kraków Główny","arrival":"03:56","departure":"04:23"},
+  {"station":"Rzeszów Główny","arrival":"05:56","departure":"05:57"},
+  {"station":"Przemyśl Główny","arrival":"06:57","departure":"06:57"}
+]
