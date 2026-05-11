@@ -1,0 +1,9 @@
+[
+  {"station":"Warszawa Wschodnia","arrival":"09:00","departure":"09:05"},
+  {"station":"Warszawa Centralna","arrival":"09:12","departure":"09:14"},
+  {"station":"Łuków","arrival":"10:05","departure":"10:07"},
+  {"station":"Lublin","arrival":"11:30","departure":"11:35"},
+  {"station":"Chełm","arrival":"13:00","departure":"13:05"},
+  {"station":"Przemyśl Gł.","arrival":"16:30","departure":"16:35"},
+  {"station":"Praha Zahradni Mesto","arrival":"22:00","departure":"22:00"}
+]
