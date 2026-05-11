@@ -1,0 +1,11 @@
+[
+  {"station":"Chałupki","arrival":"13:54","departure":"13:55"},
+  {"station":"Racibórz","arrival":"14:08","departure":"14:10"},
+  {"station":"Gliwice","arrival":"15:02","departure":"15:05"},
+  {"station":"Tarnowskie Góry","arrival":"15:31","departure":"15:34"},
+  {"station":"Pyrzowice Lotnisko","arrival":"15:47","departure":"15:49"},
+  {"station":"Zawiercie","arrival":"16:04","departure":"16:08"},
+  {"station":"Warszawa Zachodnia","arrival":"17:53","departure":"17:56"},
+  {"station":"Warszawa Centralna","arrival":"18:00","departure":"18:09"},
+  {"station":"Warszawa Wschodnia","arrival":"18:15","departure":"18:15"}
+]
